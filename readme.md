@@ -1,1 +1,1 @@
-Chat bot written in Prolog used for UBC food recommendations
+Chat bot written in Prolog used for food recommendations
