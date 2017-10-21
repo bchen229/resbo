@@ -5,6 +5,16 @@ noun_phrase(T0,T4,Obj,C0,C4) :-
     noun(T2,T3,Obj,C2,C3),
     mp(T3,T4,Obj,C3,C4).
 
+% verb phrase
+verb_phrase(T0,T2,Obj,C0,C2) :-
+    verb(T0,T1,Obj,C0,C1),
+    opt_noun_phrase(T1,T2,Obj,C1,C2).
+
+% optional noun phrase can exist or not
+opt_noun_phrase(T,T,_,C,C).
+opt_noun_phrase(T0,T1,Obj,C0,C1) :-
+    noun_phrase(T0,T1,Obj,C0,C1).
+
 % determinants
 det([the|T],T,_,C,C).
 det([a|T],T,_,C,C).
@@ -36,17 +46,20 @@ reln([better,than|T],T,O1,O2,C,[better(O1,O2)|C]).
 noun([food|T],T,Obj,C,[food(Obj)|C]).
 noun([X|T],T,X,C,C) :- food(X).
 
-% question
-question([what,is|T0],T1,Obj,C0,C1) :-
+% verb
+verb([to,eat|T],T,_,C,C).
+
+% user_input 
+user_input([i,like|T0],T1,Obj,C0,C1) :-
     mp(T0,T1,Obj,C0,C1).
-question([what,is|T0],T1,Obj,C0,C1) :-
-    noun_phrase(T0,T1,Obj,C0,C1).
+user_input([i,like|T0],T1,Obj,C0,C1) :-
+    verb_phrase(T0,T1,Obj,C0,C1).
 
 % ask
 % Since C is a list of relations on individuals, 
 % we use prove_all to execute the queries
 ask(Q,A) :-
-    question(Q,[],A,[],C),
+    user_input(Q,[],A,[],C),
     prove_all(C).
 
 % prove all
