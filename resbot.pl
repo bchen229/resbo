@@ -82,13 +82,13 @@ better(pizza,kiwi).
 % 
 
 prop(mcdonald, type, restaurant).
-prop(mcdonald, name, "McDonalds")
+prop(mcdonald, name, "McDonalds").
 prop(mcdonald, serves, burger).
 prop(mcdonald, serves, fries).
 prop(mcdonald, serves, icecream).
 
 prop(starbucks, type, cafe).
-prop(starbucks, name, "Starbucks")
+prop(starbucks, name, "Starbucks").
 prop(starbucks, serves, coffee).
 prop(starbucks, serves, cookie).
 
