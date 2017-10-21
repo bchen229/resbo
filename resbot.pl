@@ -78,3 +78,14 @@ good(pizza).
 tasty(pizza).
 
 better(pizza,kiwi).
+
+% 
+
+prop(mcdonald, type, restraunt).
+prop(mcdonald, serves, burger).
+prop(mcdonald, serves, fries).
+prop(mcdonald, serves, icecream).
+
+prop(starbucks, type, cafe).
+prop(starbucks, serves, coffee).
+prop(starbucks, serves, cookie).
