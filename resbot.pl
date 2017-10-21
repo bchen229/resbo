@@ -37,8 +37,11 @@ mp([that|T0],T2,O1,C0,C2) :-
 % relation
 reln(T,T,O1,O2,C,[prop(O1,serves,O2)|C]).
 
-% noun
-noun([X|T],T,Y,C,[prop(Y,serves,X)|C]).
+% noun 
+% first we find "Restaurants" that have the "Food" noun in our knowledge base,
+% then we lookup the alias of the restaurant from the knowledge base.
+noun([Food|T],T,Alias,C,[prop(Restaurant,name,Alias)|C]) :- 
+    prop(Restaurant,serves,Food).
 
 % verb
 verb([to,eat|T],T,_,C,C).
