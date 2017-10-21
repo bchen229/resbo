@@ -8,27 +8,22 @@ noun_phrase(T0,T4,Obj,C0,C4) :-
 % verb phrase
 verb_phrase(T0,T2,Obj,C0,C2) :-
     verb(T0,T1,Obj,C0,C1),
-    opt_noun_phrase(T1,T2,Obj,C1,C2).
-
-% optional noun phrase can exist or not
-opt_noun_phrase(T,T,_,C,C).
-opt_noun_phrase(T0,T1,Obj,C0,C1) :-
-    noun_phrase(T0,T1,Obj,C0,C1).
+    noun_phrase(T1,T2,Obj,C1,C2).
 
 % determinants
 det([the|T],T,_,C,C).
 det([a|T],T,_,C,C).
 det(T,T,_,C,C).
 
-% adjectives
+% adjectives used to define "cheap" relation
 adjectives(T,T,_,C,C).
-adjectives(T0,T2,Obj,C0,C2) :-
-    adj(T0,T1,Obj,C0,C1),
-    adjectives(T1,T2,Obj,C1,C2).
+%  adjectives(T0,T2,Obj,C0,C2) :-
+%     adj(T0,T1,Obj,C0,C1),
+%     adjectives(T1,T2,Obj,C1,C2).
 
 % no adjectives yet
-adj([good|T],T,Obj,C,[good(Obj)|C]).
-adj([tasty|T],T,Obj,C,[tasty(Obj)|C]).
+% adj([good|T],T,Obj,C,[good(Obj)|C]).
+% adj([tasty|T],T,Obj,C,[tasty(Obj)|C]).
 
 % modifying phrase
 mp(T,T,_,C,C).
@@ -40,18 +35,15 @@ mp([that|T0],T2,O1,C0,C2) :-
     noun_phrase(T1,T2,O2,C1,C2).
 
 % relation
-reln([better,than|T],T,O1,O2,C,[better(O1,O2)|C]).
+reln(T,T,O1,O2,C,[prop(O1,serves,O2)|C]).
 
 % noun
-noun([food|T],T,Obj,C,[food(Obj)|C]).
-noun([X|T],T,X,C,C) :- food(X).
+noun([X|T],T,Y,C,[prop(Y,serves,X)|C]).
 
 % verb
 verb([to,eat|T],T,_,C,C).
 
 % user_input 
-user_input([i,like|T0],T1,Obj,C0,C1) :-
-    mp(T0,T1,Obj,C0,C1).
 user_input([i,like|T0],T1,Obj,C0,C1) :-
     verb_phrase(T0,T1,Obj,C0,C1).
 
@@ -69,18 +61,6 @@ prove_all([H|T]) :-
     prove_all(T).
 
 % Knowledge base
-food(pizza).
-food(kiwi).
-food([fried,chicken]).
-
-good(pizza).
-
-tasty(pizza).
-
-better(pizza,kiwi).
-
-% 
-
 prop(mcdonald, type, restraunt).
 prop(mcdonald, serves, burger).
 prop(mcdonald, serves, fries).
