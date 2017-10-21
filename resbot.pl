@@ -93,9 +93,9 @@ prop(starbucks, serves, coffee).
 prop(starbucks, serves, cookie).
 
 prop(pizzahut, type, restaurant).
-prop(pizzahut, name, "Pizza Hut")
+prop(pizzahut, name, "Pizza Hut").
 prop(pizzahut, serves, pizza).
 
 prop(sage, type, restaurant).
-prop(sage, name, "Sage Bistro")
+prop(sage, name, "Sage Bistro").
 prop(sage, serves, seafood).
