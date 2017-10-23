@@ -1,8 +1,9 @@
 % noun phrase
-noun_phrase(T0,T3,Obj,C0,C3) :-
+noun_phrase(T0,T4,Obj,C0,C4) :-
     det(T0,T1,Obj,C0,C1),
     adjectives(T1,T2,Obj,C1,C2),
-    noun(T2,T3,Obj,C2,C3).
+    noun(T2,T3,Obj,C2,C3),
+    pp(T3,T4,Obj,C3,C4).
 
 % negative noun phrase
 noun_phrase_neg(T0,T3,Obj,C0,C3) :-
@@ -63,7 +64,7 @@ adjectives_neg(T0,T2,Obj,C0,C2) :-
     adj_neg(T0,T1,Obj,C0,C1),
     adjectives_neg(T1,T2,Obj,C1,C2).
 
-adj_neg([cheap|T],T,Res,C,[prop(Res,name),
+adj_neg([cheap|T],T,Res,C,[prop(Res,n/burgame),
                        prop(Res,serves)|C]) :-
     prop(Res,price,_),
     \+prop(Res,price,cheap).
@@ -109,6 +110,23 @@ noun_neg([Food|T],T,Res,C,[prop(Res,name),
     \+prop(Res,serves,Food),
     \+member(prop(Res,name),C).
     
+% optional prepositional phrase
+pp(T,T,_,C,C).
+pp(T0,T2,Res,C0,C2) :-
+    preposition(T0,T1,Res,C0,C1),
+    noun_phrase(T1,T2,Res,C1,C2).
+
+preposition([and|T],T,_,C,C).
+preposition([or|T],T,_,C,C).
+
+% optional negative prepositional phrase
+pp_neg(T,T,_,C,C).
+pp_neg(T0,T2,Res,C0,C2) :-
+    preposition(T0,T1,Res,C0,C1),
+    noun_phrase_neg(T1,T2,Res,C1,C2).
+    
+preposition_neg([but,not|T],T,_,C,C).
+
 % verb
 verb([to,eat|T],T,_,C,C).
 % no verbs like to eat just assumes eating
