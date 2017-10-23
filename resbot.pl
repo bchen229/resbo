@@ -136,8 +136,9 @@ prop_add([Food|T],T,Res,C,[prop(Res,name),
 
 % C2 is C0 without instances of Res
 prop_remove([Food|T],T,_,C,C) :-
-    prop(Res,serves,Food).
- prop_remove([Food|T],T,_,C0,C2) :-
+    prop(Res,serves,Food),
+    \+member(prop(Res,name),C).
+prop_remove([Food|T],T,_,C0,C2) :-
     prop(Res,serves,Food),
     member(prop(Res,name),C0),
     delete(C0,prop(Res,name),C1),
@@ -145,7 +146,7 @@ prop_remove([Food|T],T,_,C,C) :-
 
 % verb
 verb([to,eat|T],T,_,C,C).
-% no verbs like to eat just assumes eating
+% no verbs like "to eat" just assumes eating
 verb(T,T,_,C,C).
 
 % user_input 
