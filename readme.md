@@ -15,13 +15,15 @@ I like to eat pizza.
 I like to eat ramen and sushi.  
 I like to eat ramen or pizza.  
 I like to eat fast food but not pizza.  
-I don’t want to eat noodle, pizza, and sushi.  
+I do not want to eat noodle, pizza, and sushi.  
 I want to eat somewhere cheap.  
 ```
 Also supports Dynamically adding to our knowledge base through user inputs:
 ```
-A new place called Sausage in a Bun open and it serves hotdog.
+A new place called Sausage in a Bun opened and it serves hotdog.
 Sausage in a Bun also sells burger.
 Sausage in a Bun no longers sells hotdog.
 Sausage in a Bun has by closed by food inspectors
 ```
+We are assuming that all data entered into knowledge base from user during the session is true.
+So if the user says that GitHub sells hamburgers then GitHub will be added as a restaurant that sells hamburgers.
