@@ -116,7 +116,7 @@ notin(_,[]).
 notin(E,[H|R]) :-
     dif(E,H),
     notin(E,R).
-    
+
 % optional prepositional phrase
 pp(T,T,_,C,C).
 pp(T0,T2,Res,C0,C2) :-
@@ -125,8 +125,6 @@ pp(T0,T2,Res,C0,C2) :-
 
 preposition([and|T],T,_,C,C).
 preposition([or|T],T,_,C,C).
-preposition([but,not|T],T,_,C0,C1) :-
-    prop_remove(T,T,_,C0,C1).
 
 % optional negative prepositional phrase
 pp_neg(T,T,_,C,C).
@@ -144,9 +142,8 @@ prop_add([Food|T],T,Res,C,[prop(Res,name),
 
 % C2 is C0 without instances of Res
 prop_remove([Food|T],T,_,C,C) :-
-    prop(Res,serves,Food),
-    \+member(prop(Res,name),C).
-prop_remove([Food|T],T,_,C0,C2) :-
+    prop(Res,serves,Food).
+ prop_remove([Food|T],T,_,C0,C2) :-
     prop(Res,serves,Food),
     member(prop(Res,name),C0),
     delete(C0,prop(Res,name),C1),
