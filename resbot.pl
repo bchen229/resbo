@@ -57,6 +57,7 @@ noun([Food|T],T,Res,C,[prop(Res,name),
 % noun_neg matches restaurants that do not have the food
 noun_neg([Food|T],T,Res,C,[prop(Res,name),
                            prop(Res,serves)|C]) :-
+    prop(Res,type,_),
     \+prop(Res,serves,Food).
     
 % verb
