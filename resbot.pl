@@ -32,28 +32,14 @@ adjectives(T0,T2,Obj,C0,C2) :-
     adj(T0,T1,Obj,C0,C1),
     adjectives(T1,T2,Obj,C1,C2).
 
-adj([cheap|T],T,Res,C,[prop(Res,name),
+adj([Price|T],T,Res,C,[prop(Res,name),
                        prop(Res,serves)|C]) :-
-    prop(Res,price,cheap).
-adj([moderate|T],T,Res,C,[prop(Res,name),
-                          prop(Res,serves)|C]) :-
-    prop(Res,price,moderate).
-adj([expensive|T],T,Res,C,[prop(Res,name),
-                           prop(Res,serves)|C]) :-
-    prop(Res,price,expensive).
+    prop(Res,price,Price).
+
 % adjectives used to define the type relation
-adj([fast|T],T,Res,C,[prop(Res,name),
+adj([Cuisine|T],T,Res,C,[prop(Res,name),
                       prop(Res,serves)|C]) :-
-    prop(Res,type,fast).
-adj([cafe|T],T,Res,C,[prop(Res,name),
-                      prop(Res,serves)|C]) :-
-    prop(Res,type,cafe).
-adj([western|T],T,Res,C,[prop(Res,name),
-                         prop(Res,serves)|C]) :-
-    prop(Res,type,western).
-adj([japanese|T],T,Res,C,[prop(Res,name),
-                          prop(Res,serves)|C]) :-
-    prop(Res,type,japanese).
+    prop(Res,type,Cuisine).
 
 % adjectives_neg used to define the negation of the adjectives
 % adjectives used to define "cheap", "moderate",
