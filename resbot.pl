@@ -101,12 +101,12 @@ noun([Food|T],T,Res,C,[prop(Res,name),
     prop(Res,serves,Food).
 
 noun([Food1, and, Food2|T],T,Res,C,[prop(Res,name),
-                       prop(Res,serves), prop(Res,serves)|C]) :-
+                       prop(Res,serves)|C]) :-
     prop(Res,serves,Food1),
     prop(Res,serves,Food2).
 
 noun([Food1, or, Food2|T],T,Res,C,[prop(Res,name),
-                       prop(Res,serves), prop(Res,serves)|C]) :-
+                       prop(Res,serves)|C]) :-
     prop(Res,serves,Food1);
     prop(Res,serves,Food2).
 
@@ -115,8 +115,17 @@ noun_neg([food|T],T,_,C,C).
 noun_neg([Food|T],T,Res,C,[prop(Res,name),
                            prop(Res,serves)|C]) :-
     prop(Res,type,_),
-    \+prop(Res,serves,Food),
-    \+member(prop(Res,name),C).
+    \+prop(Res,serves,Food).
+
+% we are interpretting the English conditions of NOT x and y == NOT x or y
+% current implementation assumes that if the food is present at the establishment
+% then we don't want it listed at all
+noun_neg([Food1, Operator, Food2|T],T,Res,C,[prop(Res,name),
+                       prop(Res,serves)|C]) :-
+    prop(Res,type,_),
+    member(Operator, [and,or]),
+    \+prop(Res,serves,Food1),
+    \+prop(Res,serves,Food2).
     
 % verb
 verb([to,eat|T],T,_,C,C).
