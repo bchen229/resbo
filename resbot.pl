@@ -4,6 +4,11 @@ noun_phrase(T0,T3,Obj,C0,C3) :-
     adjectives(T1,T2,Obj,C1,C2),
     noun(T2,T3,Obj,C2,C3).
 
+% for the "but not" case
+noun_phrase(T0,T2,Obj,C0,C2) :-
+    det(T0,T1,Obj,C0,C1),
+    adjectives(T1,T2,Obj,C1,C2).
+
 % negative noun phrase
 noun_phrase_neg(T0,T3,Obj,C0,C3) :-
     det(T0,T1,Obj,C0,C1),
@@ -41,6 +46,13 @@ adj([Cuisine|T],T,Res,C,[prop(Res,name),
                       prop(Res,serves)|C]) :-
     prop(Res,type,Cuisine).
 
+% the "but not" case
+adj([Cuisine,food,but,not,Food|T],T,Res,C,[prop(Res,name),
+                      prop(Res,serves)|C]) :-
+    prop(Res,type,Cuisine),
+    \+prop(Res,serves,Food).
+    
+
 % adjectives_neg used to define the negation of the adjectives
 % adjectives used to define "cheap", "moderate",
 % and "expensive" price relation
@@ -67,12 +79,12 @@ noun([Food|T],T,Res,C,[prop(Res,name),
                        prop(Res,serves)|C]) :-
     prop(Res,serves,Food).
 
-noun([Food1, and, Food2|T],T,Res,C,[prop(Res,name),
+noun([Food1,and,Food2|T],T,Res,C,[prop(Res,name),
                        prop(Res,serves)|C]) :-
     prop(Res,serves,Food1),
     prop(Res,serves,Food2).
 
-noun([Food1, or, Food2|T],T,Res,C,[prop(Res,name),
+noun([Food1,or,Food2|T],T,Res,C,[prop(Res,name),
                        prop(Res,serves)|C]) :-
     prop(Res,serves,Food1);
     prop(Res,serves,Food2).
