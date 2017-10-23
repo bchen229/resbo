@@ -125,6 +125,8 @@ pp(T0,T2,Res,C0,C2) :-
 
 preposition([and|T],T,_,C,C).
 preposition([or|T],T,_,C,C).
+preposition([but,not|T],T,_,C0,C1) :-
+    prop_remove(T,T,_,C0,C1).
 
 % optional negative prepositional phrase
 pp_neg(T,T,_,C,C).
@@ -255,7 +257,6 @@ prop(sage, type, restaurant).
 prop(sage, style, western).
 prop(sage, name, 'Sage Bistro').
 prop(sage, serves, seafood).
-prop(sage, serves, burgers).
 prop(sage, price, expensive).
 
 prop(bento_sushi, type, restaurant).
