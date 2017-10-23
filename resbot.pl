@@ -57,7 +57,6 @@ noun([Food|T],T,Res,C,[prop(Res,name),
 % noun_neg matches restaurants that do not have the food
 noun_neg([Food|T],T,Res,C,[prop(Res,name),
                            prop(Res,serves)|C]) :-
-    prop(Res,type,restaurant),
     \+prop(Res,serves,Food).
     
 % verb
@@ -91,7 +90,7 @@ prove_all([Q|QT],[V|VT]) :-
     prove_all(QT,VT).
 
 % Knowledge base
-prop(mcdonald, type, restaurant).
+prop(mcdonald, type, fast_food).
 prop(mcdonald, name, "McDonalds").
 prop(mcdonald, serves, burger).
 prop(mcdonald, serves, fries).
@@ -102,11 +101,16 @@ prop(starbucks, name, "Starbucks").
 prop(starbucks, serves, coffee).
 prop(starbucks, serves, cookie).
 
-prop(pizzahut, type, restaurant).
+prop(pizzahut, type, fast_food).
 prop(pizzahut, name, "Pizza Hut").
 prop(pizzahut, serves, pizza).
 
-prop(sage, type, restaurant).
+prop(sage, type, western).
 prop(sage, name, "Sage Bistro").
 prop(sage, serves, seafood).
 prop(sage, serves, burger).
+
+prop(bento_sushi, type, japanese).
+prop(bento_sushi, name, "Bento Sushi").
+prop(bento_sushi, serves, sushi).
+prop(bento_sushi, serves, ramen).
