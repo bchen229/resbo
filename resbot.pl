@@ -111,6 +111,8 @@ noun_neg([Food|T],T,Res,C,[prop(Res,name),
     
 % verb
 verb([to,eat|T],T,_,C,C).
+% no verbs like to eat just assumes eating
+verb(T,T,_,C,C).
 
 % user_input 
 % for the affirmative phrase, we can simply query the knowledge
