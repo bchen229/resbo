@@ -65,7 +65,7 @@ adjectives_neg(T0,T2,Obj,C0,C2) :-
     adj_neg(T0,T1,Obj,C0,C1),
     adjectives_neg(T1,T2,Obj,C1,C2).
 
-adj_neg([cheap|T],T,Res,C,[prop(Res,n/burgame),
+adj_neg([cheap|T],T,Res,C,[prop(Res,name),
                        prop(Res,serves)|C]) :-
     prop(Res,price,_),
     \+prop(Res,price,cheap).
