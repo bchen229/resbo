@@ -45,16 +45,16 @@ adj([expensive|T],T,Res,C,[prop(Res,name),
 % adjectives used to define the type relation
 adj([fast|T],T,Res,C,[prop(Res,name),
                       prop(Res,serves)|C]) :-
-    prop(Res,type,fast).
+    prop(Res,style,fast).
 adj([cafe|T],T,Res,C,[prop(Res,name),
                       prop(Res,serves)|C]) :-
-    prop(Res,type,cafe).
+    prop(Res,style,cafe).
 adj([western|T],T,Res,C,[prop(Res,name),
                          prop(Res,serves)|C]) :-
-    prop(Res,type,western).
+    prop(Res,style,western).
 adj([japanese|T],T,Res,C,[prop(Res,name),
                           prop(Res,serves)|C]) :-
-    prop(Res,type,japanese).
+    prop(Res,style,japanese).
 
 % adjectives_neg used to define the negation of the adjectives
 % adjectives used to define "cheap", "moderate",
@@ -76,23 +76,23 @@ adj_neg([expensive|T],T,Res,C,[prop(Res,name),
                            prop(Res,serves)|C]) :-
     prop(Res,price,_),
     \+prop(Res,price,expensive).
-% adjectives used to define the type relation
+% adjectives used to define the style relation
 adj_neg([fast|T],T,Res,C,[prop(Res,name),
                       prop(Res,serves)|C]) :-
-    prop(Res,type,_),
-    \+prop(Res,type,fast).
+    prop(Res,style,_),
+    \+prop(Res,style,fast).
 adj_neg([cafe|T],T,Res,C,[prop(Res,name),
                       prop(Res,serves)|C]) :-
-    prop(Res,type,_),
-    \+prop(Res,type,cafe).
+    prop(Res,style,_),
+    \+prop(Res,style,cafe).
 adj_neg([western|T],T,Res,C,[prop(Res,name),
                          prop(Res,serves)|C]) :-
-    prop(Res,type,_),
-    \+prop(Res,type,western).
+    prop(Res,style,_),
+    \+prop(Res,style,western).
 adj_neg([japanese|T],T,Res,C,[prop(Res,name),
                           prop(Res,serves)|C]) :-
-    prop(Res,type,_),
-    \+prop(Res,type,japanese).
+    prop(Res,style,_),
+    \+prop(Res,style,japanese).
 
 % noun food is a general word used to refer to all types of food
 noun([food|T],T,_,C,C).
@@ -106,15 +106,15 @@ noun([Food|T],T,Res,C,[prop(Res,name),
 noun_neg([food|T],T,_,C,C).
 noun_neg([Food|T],T,Res,C,[prop(Res,name),
                            prop(Res,serves)|C]) :-
-    prop(Res,type,_),
+    prop(Res,type,restaurant),
     \+prop(Res,serves,Food),
     \+member(prop(Res,name),C).
     
 % optional prepositional phrase
 pp(T,T,_,C,C).
 pp(T0,T2,Res,C0,C2) :-
-    preposition(T0,T1,Res,C0,C1),
-    noun_phrase(T1,T2,Res,C1,C2).
+     preposition(T0,T1,Res,C0,C1),
+     prop_add(T1,T2,_,C1,C2).
 
 preposition([and|T],T,_,C,C).
 preposition([or|T],T,_,C,C).
@@ -123,9 +123,22 @@ preposition([or|T],T,_,C,C).
 pp_neg(T,T,_,C,C).
 pp_neg(T0,T2,Res,C0,C2) :-
     preposition(T0,T1,Res,C0,C1),
-    noun_phrase_neg(T1,T2,Res,C1,C2).
+    prop_remove(T1,T2,Res,C1,C2).
     
-preposition_neg([but,not|T],T,_,C,C).
+preposition_neg([and|T],T,_,C,C).
+preposition_neg([or|T],T,_,C,C).
+
+prop_add([Food|T],T,Res,C,[prop(Res,name),
+                           prop(Res,serves)|C]) :-
+    prop(Res,serves,Food),
+    \+member(prop(Res,name),C).
+
+% C2 is C0 without instances of Res
+prop_remove([Food|T],T,Res,C0,C2) :-
+    prop(Res,serves,Food),
+    member(prop(Res,name),C0),
+    delete(C0,prop(Res,name),C1),
+    delete(C1,prop(Res,serves),C2).
 
 % verb
 verb([to,eat|T],T,_,C,C).
@@ -188,14 +201,14 @@ ask(Q,Alias,Food) :-
 % iterates through the list of queries and variables
 % and calls the queries with the corresponding variables
 prove_all([],_,_).
-prove_all([Q|QT],Alias,Food) :-
+prove_all([Q|QT],[A|Alias],Food) :-
     Q = prop(_,name),
-    call(Q,Alias),
+    call(Q,A),
     prove_all(QT,Alias,Food).
     
-prove_all([Q|QT],Alias,Food) :-
+prove_all([Q|QT],Alias,[F|Food]) :-
     Q = prop(_,serves),
-    call(Q,Food),
+    call(Q,F),
     prove_all(QT,Alias,Food).
 
 add_rule(Predicate, X, Y, Z) :-
@@ -207,32 +220,47 @@ remove_rule(Predicate, X, Y, Z) :-
     retract(Fact).
 
 % Knowledge base
-prop(mcdonald, type, fast).
+prop(mcdonald, type, restaurant).
+prop(mcdonald, style, fast).
 prop(mcdonald, name, 'McDonalds').
 prop(mcdonald, serves, burgers).
 prop(mcdonald, serves, fries).
 prop(mcdonald, serves, icecream).
 prop(mcdonald, price, cheap).
 
-prop(starbucks, type, cafe).
+prop(starbucks, type, restaurant).
+prop(starbucks, style, cafe).
 prop(starbucks, name, 'Starbucks').
 prop(starbucks, serves, coffee).
 prop(starbucks, serves, cookie).
 prop(starbucks, price, moderate).
 
-prop(pizzahut, type, fast).
+prop(pizzahut, type, restaurant).
+prop(pizzahut, style, fast).
 prop(pizzahut, name, 'Pizza Hut').
 prop(pizzahut, serves, pizza).
 prop(pizzahut, price, moderate).
 
-prop(sage, type, western).
+prop(sage, type, restaurant).
+prop(sage, style, western).
 prop(sage, name, 'Sage Bistro').
 prop(sage, serves, seafood).
 prop(sage, serves, burgers).
 prop(sage, price, expensive).
 
-prop(bento_sushi, type, japanese).
+prop(bento_sushi, type, restaurant).
+prop(bento_sushi, style, japanese).
 prop(bento_sushi, name, 'Bento Sushi').
 prop(bento_sushi, serves, sushi).
 prop(bento_sushi, serves, ramen).
 prop(bento_sushi, price, moderate).
+
+prop(burgers, type, food).
+prop(fries, type, food).
+prop(icecream, type, food).
+prop(coffee, type, food).
+prop(cookie, type, food).
+prop(pizza, type, food).
+prop(seafood, type, food).
+prop(sushi, type, food).
+prop(ramen, type, food).
