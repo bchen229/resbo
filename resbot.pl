@@ -98,8 +98,17 @@ noun([food|T],T,_,C,C).
 % noun queries for the restauarant that have the Food
 noun([Food|T],T,Res,C,[prop(Res,name),
                        prop(Res,serves)|C]) :-
-    prop(Res,serves,Food),
-    \+member(prop(Res,name),C).
+    prop(Res,serves,Food).
+
+noun([Food1, and, Food2|T],T,Res,C,[prop(Res,name),
+                       prop(Res,serves), prop(Res,serves)|C]) :-
+    prop(Res,serves,Food1),
+    prop(Res,serves,Food2).
+
+noun([Food1, or, Food2|T],T,Res,C,[prop(Res,name),
+                       prop(Res,serves), prop(Res,serves)|C]) :-
+    prop(Res,serves,Food1);
+    prop(Res,serves,Food2).
 
 % noun_neg matches restaurants that do not have the food
 noun_neg([food|T],T,_,C,C).
@@ -174,7 +183,7 @@ prove_all([Q|QT],Alias,Food) :-
     Q = prop(_,name),
     call(Q,Alias),
     prove_all(QT,Alias,Food).
-    
+
 prove_all([Q|QT],Alias,Food) :-
     Q = prop(_,serves),
     call(Q,Food),
