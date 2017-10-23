@@ -6,10 +6,11 @@ noun_phrase(T0,T4,Obj,C0,C4) :-
     pp(T3,T4,Obj,C3,C4).
 
 % negative noun phrase
-noun_phrase_neg(T0,T3,Obj,C0,C3) :-
+noun_phrase_neg(T0,T4,Obj,C0,C4) :-
     det(T0,T1,Obj,C0,C1),
     adjectives_neg(T1,T2,Obj,C1,C2),
-    noun_neg(T2,T3,Obj,C2,C3).
+    noun_neg(T2,T3,Obj,C2,C3),
+    pp_neg(T3,T4,Obj,C3,C4).
 
 % verb phrase
 verb_phrase(T0,T2,Obj,C0,C2) :-
@@ -109,6 +110,12 @@ noun_neg([Food|T],T,Res,C,[prop(Res,name),
     prop(Res,type,restaurant),
     \+prop(Res,serves,Food),
     \+member(prop(Res,name),C).
+
+% notin(E,L) is true if E is not in list L
+notin(_,[]).
+notin(E,[H|R]) :-
+    dif(E,H),
+    notin(E,R).
     
 % optional prepositional phrase
 pp(T,T,_,C,C).
@@ -134,7 +141,10 @@ prop_add([Food|T],T,Res,C,[prop(Res,name),
     \+member(prop(Res,name),C).
 
 % C2 is C0 without instances of Res
-prop_remove([Food|T],T,Res,C0,C2) :-
+prop_remove([Food|T],T,_,C,C) :-
+    prop(Res,serves,Food),
+    \+member(prop(Res,name),C).
+prop_remove([Food|T],T,_,C0,C2) :-
     prop(Res,serves,Food),
     member(prop(Res,name),C0),
     delete(C0,prop(Res,name),C1),
