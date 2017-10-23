@@ -16,7 +16,7 @@ I like to eat ramen and sushi.
 I like to eat ramen or pizza.  
 I like to eat fast food but not pizza.  
 I do not want to eat noodle, pizza, and sushi.  
-I want to eat somewhere cheap.  
+I want to eat cheap food.  
 ```
 Also supports Dynamically adding to our knowledge base through user inputs:
 ```
