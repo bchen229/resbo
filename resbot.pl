@@ -111,12 +111,6 @@ noun_neg([Food|T],T,Res,C,[prop(Res,name),
     \+prop(Res,serves,Food),
     \+member(prop(Res,name),C).
 
-% notin(E,L) is true if E is not in list L
-notin(_,[]).
-notin(E,[H|R]) :-
-    dif(E,H),
-    notin(E,R).
-
 % optional prepositional phrase
 pp(T,T,_,C,C).
 pp(T0,T2,Res,C0,C2) :-
