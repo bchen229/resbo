@@ -134,10 +134,10 @@ prop_add([Food|T],T,Res,C,[prop(Res,name),
     prop(Res,serves,Food),
     \+member(prop(Res,name),C).
 
-% C2 is C0 without instances of Res
 prop_remove([Food|T],T,_,C,C) :-
     prop(Res,serves,Food),
     \+member(prop(Res,name),C).
+% C2 is C0 without instances of Res
 prop_remove([Food|T],T,_,C0,C2) :-
     prop(Res,serves,Food),
     member(prop(Res,name),C0),
