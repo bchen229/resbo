@@ -7,7 +7,7 @@ noun_phrase(T0,T3,Obj,C0,C3) :-
 % negative noun phrase
 noun_phrase_neg(T0,T3,Obj,C0,C3) :-
     det(T0,T1,Obj,C0,C1),
-    adjectives(T1,T2,Obj,C1,C2),
+    adjectives_neg(T1,T2,Obj,C1,C2),
     noun_neg(T2,T3,Obj,C2,C3).
 
 % verb phrase
@@ -26,7 +26,7 @@ det([a|T],T,_,C,C).
 det(T,T,_,C,C).
 
 % adjectives used to define "cheap", "moderate",
-% and "expensive" relation
+% and "expensive" price relation
 adjectives(T,T,_,C,C).
 adjectives(T0,T2,Obj,C0,C2) :-
     adj(T0,T1,Obj,C0,C1),
@@ -41,6 +41,57 @@ adj([moderate|T],T,Res,C,[prop(Res,name),
 adj([expensive|T],T,Res,C,[prop(Res,name),
                            prop(Res,serves)|C]) :-
     prop(Res,price,expensive).
+% adjectives used to define the type relation
+adj([fast|T],T,Res,C,[prop(Res,name),
+                      prop(Res,serves)|C]) :-
+    prop(Res,type,fast).
+adj([cafe|T],T,Res,C,[prop(Res,name),
+                      prop(Res,serves)|C]) :-
+    prop(Res,type,cafe).
+adj([western|T],T,Res,C,[prop(Res,name),
+                         prop(Res,serves)|C]) :-
+    prop(Res,type,western).
+adj([japanese|T],T,Res,C,[prop(Res,name),
+                          prop(Res,serves)|C]) :-
+    prop(Res,type,japanese).
+
+% adjectives_neg used to define the negation of the adjectives
+% adjectives used to define "cheap", "moderate",
+% and "expensive" price relation
+adjectives_neg(T,T,_,C,C).
+adjectives_neg(T0,T2,Obj,C0,C2) :-
+    adj_neg(T0,T1,Obj,C0,C1),
+    adjectives_neg(T1,T2,Obj,C1,C2).
+
+adj_neg([cheap|T],T,Res,C,[prop(Res,name),
+                       prop(Res,serves)|C]) :-
+    prop(Res,price,_),
+    \+prop(Res,price,cheap).
+adj_neg([moderate|T],T,Res,C,[prop(Res,name),
+                          prop(Res,serves)|C]) :-
+    prop(Res,price,_),
+    \+prop(Res,price,moderate).
+adj_neg([expensive|T],T,Res,C,[prop(Res,name),
+                           prop(Res,serves)|C]) :-
+    prop(Res,price,_),
+    \+prop(Res,price,expensive).
+% adjectives used to define the type relation
+adj_neg([fast|T],T,Res,C,[prop(Res,name),
+                      prop(Res,serves)|C]) :-
+    prop(Res,type,_),
+    \+prop(Res,type,fast).
+adj_neg([cafe|T],T,Res,C,[prop(Res,name),
+                      prop(Res,serves)|C]) :-
+    prop(Res,type,_),
+    \+prop(Res,type,cafe).
+adj_neg([western|T],T,Res,C,[prop(Res,name),
+                         prop(Res,serves)|C]) :-
+    prop(Res,type,_),
+    \+prop(Res,type,western).
+adj_neg([japanese|T],T,Res,C,[prop(Res,name),
+                          prop(Res,serves)|C]) :-
+    prop(Res,type,_),
+    \+prop(Res,type,japanese).
 
 % noun food is a general word used to refer to all types of food
 noun([food|T],T,_,C,C).
@@ -51,10 +102,12 @@ noun([Food|T],T,Res,C,[prop(Res,name),
     \+member(prop(Res,name),C).
 
 % noun_neg matches restaurants that do not have the food
+noun_neg([food|T],T,_,C,C).
 noun_neg([Food|T],T,Res,C,[prop(Res,name),
                            prop(Res,serves)|C]) :-
     prop(Res,type,_),
-    \+prop(Res,serves,Food).
+    \+prop(Res,serves,Food),
+    \+member(prop(Res,name),C).
     
 % verb
 verb([to,eat|T],T,_,C,C).
@@ -91,7 +144,7 @@ prove_all([Q|QT],[V|VT]) :-
     prove_all(QT,VT).
 
 % Knowledge base
-prop(mcdonald, type, fast_food).
+prop(mcdonald, type, fast).
 prop(mcdonald, name, "McDonalds").
 prop(mcdonald, serves, burgers).
 prop(mcdonald, serves, fries).
@@ -104,7 +157,7 @@ prop(starbucks, serves, coffee).
 prop(starbucks, serves, cookie).
 prop(starbucks, price, moderate).
 
-prop(pizzahut, type, fast_food).
+prop(pizzahut, type, fast).
 prop(pizzahut, name, "Pizza Hut").
 prop(pizzahut, serves, pizza).
 prop(pizzahut, price, moderate).
