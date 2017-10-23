@@ -154,8 +154,14 @@ state(S) :-
     restauarant_id_from_query(S, [], RestauarantId, [no, longer, serves|[V|_]]),
     remove_rule(prop, RestauarantId, serves, V).
 
+% Restauarant has closed down
+state(S) :- 
+    restauarant_id_from_query(S, [], RestauarantId, [has, closed, down]),
+    remove_rule(prop, RestauarantId, _, _).
+
 % state(["Pizza", "Hut", serves, burger]).
 % state(["Pizza", "Hut", no, longer, serves, burger]).
+% state(["Pizza", "Hut", has, closed, down]).
 
 % prove all
 % iterates through the list of queries and variables
