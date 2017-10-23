@@ -74,6 +74,15 @@ user_input([i,like|T0],T1,Obj,C0,C1) :-
 user_input([i,do,not,like|T0],T1,Obj,C0,C1) :-
     verb_phrase_neg(T0,T1,Obj,C0,C1).
 
+% restauarant_id_from_query is true if list A is the name of restauarant with id RestauarantId
+restauarant_id_from_query(S, A, RestauarantId, S) :-
+    atomic_list_concat(A, ' ', Name),
+    prop(RestauarantId, name, Name).
+
+restauarant_id_from_query([H|T], A, RestauarantId, RestS) :- 
+    append(A, [H], NewA),
+    restauarant_id_from_query(T, NewA, RestauarantId, RestS).
+
 % ask
 % Since C is a list of relations on individuals, 
 % we use prove_all to execute the queries
@@ -81,6 +90,19 @@ user_input([i,do,not,like|T0],T1,Obj,C0,C1) :-
 ask(Q,Alias,Food) :-
     user_input(Q,[],_,[],C),
     prove_all(C,[Alias,Food]).
+
+% Restauarant serves Food
+state(S) :- 
+    restauarant_id_from_query(S, [], RestauarantId, [serves|[V|_]]),
+    add_rule(prop, RestauarantId, serves, V).
+
+% Restauarant no longer serves Food
+state(S) :- 
+    restauarant_id_from_query(S, [], RestauarantId, [no, longer, serves|[V|_]]),
+    remove_rule(prop, RestauarantId, serves, V).
+
+% state(["Pizza", "Hut", serves, burger]).
+% state(["Pizza", "Hut", no, longer, serves, burger]).
 
 % prove all
 % iterates through the list of queries and variables
@@ -90,28 +112,36 @@ prove_all([Q|QT],[V|VT]) :-
     call(Q,V),
     prove_all(QT,VT).
 
+add_rule(Predicate, X, Y, Z) :-
+    Fact =.. [Predicate, X, Y, Z],
+    assertz(Fact).
+
+remove_rule(Predicate, X, Y, Z) :-
+    Fact=.. [Predicate, X, Y, Z],
+    retract(Fact).
+
 % Knowledge base
 prop(mcdonald, type, fast_food).
-prop(mcdonald, name, "McDonalds").
+prop(mcdonald, name, 'McDonalds').
 prop(mcdonald, serves, burger).
 prop(mcdonald, serves, fries).
 prop(mcdonald, serves, icecream).
 
 prop(starbucks, type, cafe).
-prop(starbucks, name, "Starbucks").
+prop(starbucks, name, 'Starbucks').
 prop(starbucks, serves, coffee).
 prop(starbucks, serves, cookie).
 
 prop(pizzahut, type, fast_food).
-prop(pizzahut, name, "Pizza Hut").
+prop(pizzahut, name, 'Pizza Hut').
 prop(pizzahut, serves, pizza).
 
 prop(sage, type, western).
-prop(sage, name, "Sage Bistro").
+prop(sage, name, 'Sage Bistro').
 prop(sage, serves, seafood).
 prop(sage, serves, burger).
 
 prop(bento_sushi, type, japanese).
-prop(bento_sushi, name, "Bento Sushi").
+prop(bento_sushi, name, 'Bento Sushi').
 prop(bento_sushi, serves, sushi).
 prop(bento_sushi, serves, ramen).
