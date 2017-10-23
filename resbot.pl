@@ -138,14 +138,6 @@ restauarant_id_from_query([H|T], A, RestauarantId, RestS) :-
     append(A, [H], NewA),
     restauarant_id_from_query(T, NewA, RestauarantId, RestS).
 
-% ask
-% Since C is a list of relations on individuals, 
-% we use prove_all to execute the queries
-% example: ?- ask([i,like,to,eat,seafood],Res,Food).
-ask(Q,Alias,Food) :-
-    user_input(Q,[],_,[],C),
-    prove_all(C,[Alias,Food]).
-
 % Restauarant serves Food
 state(S) :- 
     restauarant_id_from_query(S, [], RestauarantId, [serves|[V|_]]),
@@ -165,6 +157,15 @@ state(S) :-
 % state(["Pizza", "Hut", no, longer, serves, burger]).
 % state(["Pizza", "Hut", has, closed, down]).
 
+
+% ask
+% Since C is a list of relations on individuals, 
+% we use prove_all to execute the queries
+% example: ?- ask([i,like,to,eat,seafood],Res,Food).
+ask(Q,Alias,Food) :-
+    user_input(Q,[],_,[],C),
+    prove_all(C,[Alias,Food]).
+    
 % prove all
 % iterates through the list of queries and variables
 % and calls the queries with the corresponding variables
