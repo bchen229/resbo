@@ -49,35 +49,16 @@ adjectives_neg(T0,T2,Obj,C0,C2) :-
     adj_neg(T0,T1,Obj,C0,C1),
     adjectives_neg(T1,T2,Obj,C1,C2).
 
-adj_neg([cheap|T],T,Res,C,[prop(Res,name),
+adj_neg([Price|T],T,Res,C,[prop(Res,name),
                        prop(Res,serves)|C]) :-
     prop(Res,price,_),
-    \+prop(Res,price,cheap).
-adj_neg([moderate|T],T,Res,C,[prop(Res,name),
-                          prop(Res,serves)|C]) :-
-    prop(Res,price,_),
-    \+prop(Res,price,moderate).
-adj_neg([expensive|T],T,Res,C,[prop(Res,name),
-                           prop(Res,serves)|C]) :-
-    prop(Res,price,_),
-    \+prop(Res,price,expensive).
+    \+prop(Res,price,Price).
+
 % adjectives used to define the type relation
-adj_neg([fast|T],T,Res,C,[prop(Res,name),
+adj_neg([Cuisine|T],T,Res,C,[prop(Res,name),
                       prop(Res,serves)|C]) :-
     prop(Res,type,_),
-    \+prop(Res,type,fast).
-adj_neg([cafe|T],T,Res,C,[prop(Res,name),
-                      prop(Res,serves)|C]) :-
-    prop(Res,type,_),
-    \+prop(Res,type,cafe).
-adj_neg([western|T],T,Res,C,[prop(Res,name),
-                         prop(Res,serves)|C]) :-
-    prop(Res,type,_),
-    \+prop(Res,type,western).
-adj_neg([japanese|T],T,Res,C,[prop(Res,name),
-                          prop(Res,serves)|C]) :-
-    prop(Res,type,_),
-    \+prop(Res,type,japanese).
+    \+prop(Res,type,Cuisine).
 
 % noun food is a general word used to refer to all types of food
 noun([food|T],T,_,C,C).
