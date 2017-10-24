@@ -50,12 +50,12 @@ an example query would be: (more examples can be found in query_example.pl)
 ```
 The bot will list out the restaurant names and the food that they sell.
 
-Also supports Dynamically adding to our knowledge base through user inputs:
+Also supports Dynamically modifying our knowledge base through user inputs:
 ```
-A new place called Sausage in a Bun opened and it serves hotdog.
-Sausage in a Bun also sells burger.
-Sausage in a Bun no longers sells hotdog.
-Sausage in a Bun has by closed by food inspectors
+<restraunt> now serves <food>.
+<restraunt> no longer serves <food>.
+<restraunt> has by closed down.
 ```
+
 We are assuming that all data entered into knowledge base from user during the session is true.
-So if the user says that GitHub sells hamburgers then GitHub will be added as a restaurant that sells hamburgers.
+So if the user says that Pizza Hut serves burger then Pizza Hut will be added as a restaurant that sells burger.

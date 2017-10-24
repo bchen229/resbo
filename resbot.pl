@@ -175,7 +175,7 @@ restauarant_id_from_query([H|T], A, RestauarantId, RestS) :-
 
 % Restauarant serves Food
 state(S) :- 
-    restauarant_id_from_query(S, [], RestauarantId, [serves|[V|_]]),
+    restauarant_id_from_query(S, [], RestauarantId, [now, serves|[V|_]]),
     add_rule(prop, RestauarantId, serves, V).
 
 % Restauarant no longer serves Food
@@ -188,7 +188,7 @@ state(S) :-
     restauarant_id_from_query(S, [], RestauarantId, [has, closed, down]),
     remove_rule(prop, RestauarantId, _, _).
 
-% state(["Pizza", "Hut", serves, burger]).
+% state(["Pizza", "Hut", now, serves, burger]).
 % state(["Pizza", "Hut", no, longer, serves, burger]).
 % state(["Pizza", "Hut", has, closed, down]).
 
