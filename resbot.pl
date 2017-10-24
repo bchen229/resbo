@@ -25,6 +25,7 @@ verb_phrase_neg(T0,T2,Obj,C0,C2) :-
 % determinants
 det([the|T],T,_,C,C).
 det([a|T],T,_,C,C).
+det([new, restauarant|T],T,_,C,C).
 det(T,T,_,C,C).
 
 % adjectives used to define "cheap", "moderate",
@@ -146,6 +147,7 @@ prop_remove([Food|T],T,_,C0,C2) :-
 
 % verb
 verb([to,eat|T],T,_,C,C).
+verb([has,opened|T],T,_,C,C).
 % no verbs like "to eat" just assumes eating
 verb(T,T,_,C,C).
 
@@ -173,6 +175,10 @@ restauarant_id_from_query([H|T], A, RestauarantId, RestS) :-
     append(A, [H], NewA),
     restauarant_id_from_query(T, NewA, RestauarantId, RestS).
 
+res_name(T0,Name) :- 
+    append(NameList, [has, opened], T0),
+    atomic_list_concat(NameList, ' ', Name).
+
 % Restauarant serves Food
 state(S) :- 
     restauarant_id_from_query(S, [], RestauarantId, [now, serves|[V|_]]),
@@ -187,6 +193,13 @@ state(S) :-
 state(S) :- 
     restauarant_id_from_query(S, [], RestauarantId, [has, closed, down]),
     remove_rule(prop, RestauarantId, _, _).
+
+% state(S) :- state(S, []).
+
+% <name> has opened
+state(S) :- 
+    res_name(S, Name),
+    add_rule(prop, Name, name, Name).
 
 % state(["Pizza", "Hut", now, serves, burger]).
 % state(["Pizza", "Hut", no, longer, serves, burger]).
