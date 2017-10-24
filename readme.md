@@ -30,7 +30,7 @@ i do not [like/want] to eat <food> [and/or] <food>.
 <price_type> includes:
     cheap, moderate, expensive
 
-an example query would be: 
+an example query would be: (more examples can be found in query_example.pl)
     ?- ask([i,do,not,like,to,eat,japanese,food],Res,Food).
     Res = ['McDonalds'],
     Food = [burgers] ;
