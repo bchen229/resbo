@@ -199,21 +199,21 @@ state(S) :-
 % example: ?- ask([i,like,to,eat,seafood],Res,Food).
 ask(Q,Alias,Food) :-
     user_input(Q,[],_,[],C),
-    prove_all(C,[],Alias,[],Food).
+    prove_all(C,Alias,Food).
 
 % prove all
 % iterates through the list of queries and variables
 % and calls the queries with the corresponding variables
-prove_all([],_,[],_,[]).
-prove_all([Q|QT],A0,[A|A1],F0,F1) :-
+prove_all([],[],[]).
+prove_all([Q|QT],[A|A1],F1) :-
     Q = prop(_,name),
     call(Q,A),
-    prove_all(QT,A0,A1,F0,F1).
+    prove_all(QT,A1,F1).
     
-prove_all([Q|QT],A0,A1,F0,[F|F1]) :-
+prove_all([Q|QT],A1,[F|F1]) :-
     Q = prop(_,serves),
     call(Q,F),
-    prove_all(QT,A0,A1,F0,F1).
+    prove_all(QT,A1,F1).
 
 add_rule(Predicate, X, Y, Z) :-
     Fact =.. [Predicate, X, Y, Z],
