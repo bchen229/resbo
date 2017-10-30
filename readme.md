@@ -54,7 +54,8 @@ Also supports Dynamically modifying our knowledge base through user inputs:
 ```
 <restraunt> now serves <food>.
 <restraunt> no longer serves <food>.
-<restraunt> has by closed down.
+<restraunt> has closed down.
+<new restraunt> has opened.
 ```
 
 We are assuming that all data entered into knowledge base from user during the session is true.
